@@ -18,4 +18,4 @@ $ supabase gen types typescript --local > types.ts
 $ pnpm supabase-to-zod --input types.ts --output schemas.ts
 ```
 
-That's it, go to `types.ts` file, you should have a schema for all tables, views, enums and functions.
+That's it, go to `schema.ts` file, you should have a schema for all tables, views, enums and functions.
