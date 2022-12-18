@@ -1,5 +1,3 @@
-# supabase-to-zod
-
 <div align="center">
   <img src="assets/supabase-to-zod-logo.jpg" width="200px" align="center" />
   <h1 align="center">supabase-to-zod</h1>
