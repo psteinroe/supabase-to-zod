@@ -1,6 +1,5 @@
 import { generate } from 'ts-to-zod';
 
-import { TsToZodConfig } from 'ts-to-zod';
 import fs from 'node:fs/promises';
 import { join } from 'node:path';
 import prettier from 'prettier';
@@ -9,7 +8,6 @@ import { z } from 'zod';
 import {
   transformTypes,
   getImportPath,
-  TransformTypesOptions,
   transformTypesOptionsSchema,
 } from './lib';
 
