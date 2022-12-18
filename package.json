@@ -1,6 +1,6 @@
 {
   "name": "supabase-to-zod",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "type": "module",
   "main": "./dist/index.js",
   "source": "./src/index.ts",
