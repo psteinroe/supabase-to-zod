@@ -1,0 +1,47 @@
+{
+  "name": "supabase-to-zod",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "./dist/index.js",
+  "source": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "bin": {
+    "supabase-to-zod": "./dist/cli.js"
+  },
+  "scripts": {
+    "temp": "node --loader=ts-node/esm --experimental-specifier-resolution=node ./src/lib/temp.ts",
+    "build": "tsup",
+    "clean": "rm -rf .nyc_output && rm -rf node_modules && rm -rf dist",
+    "dev": "tsup --watch",
+    "lint": "eslint src/**",
+    "lint:report": "eslint src/** --format json",
+    "lint:fix": "eslint src/** --fix",
+    "format:write": "prettier --write \"src/**/*.{ts,tsx,md}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,md}\"",
+    "semantic-release": "semantic-release"
+  },
+  "dependencies": {
+    "case": "1.6.3",
+    "commander": "^9.4.1",
+    "prettier": "2.8.0",
+    "slash": "^5.0.0",
+    "ts-to-zod": "1.13.1",
+    "typescript": "4.9.3",
+    "zod": "^3.20.2"
+  },
+  "devDependencies": {
+    "@types/node": "18.11.9",
+    "@types/prettier": "2.7.1",
+    "eslint": "^8.29.0",
+    "ts-node": "^10.9.1",
+    "tsup": "6.5.0",
+    "semantic-release": "^19.0.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/psteinroe/supabase-to-zod.git"
+  }
+}
