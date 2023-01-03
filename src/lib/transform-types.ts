@@ -159,7 +159,7 @@ export const transformTypes = z
     });
 
     let parsedTypes = typeStrings
-      .filter((s) => !s.includes('Record<'))
+      .filter((s) => !s.includes('Record<number'))
       .join(';\n');
 
     for (const { name, formattedName } of enumNames) {
