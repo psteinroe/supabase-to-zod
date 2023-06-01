@@ -7,11 +7,11 @@ specifiers:
   '@semantic-release/npm': ^9.0.1
   '@semantic-release/release-notes-generator': ^10.0.3
   '@types/node': 18.11.9
-  '@types/prettier': 2.7.1
+  '@types/prettier': 2.7.3
   case: 1.6.3
   commander: ^9.4.1
   eslint: ^8.29.0
-  prettier: 2.8.0
+  prettier: 2.8.8
   semantic-release: ^19.0.5
   slash: ^5.0.0
   ts-node: ^10.9.1
@@ -23,7 +23,7 @@ specifiers:
 dependencies:
   case: 1.6.3
   commander: 9.4.1
-  prettier: 2.8.0
+  prettier: 2.8.8
   slash: 5.0.0
   ts-to-zod: 1.13.1
   typescript: 4.9.3
@@ -36,7 +36,7 @@ devDependencies:
   '@semantic-release/npm': 9.0.1_semantic-release@19.0.5
   '@semantic-release/release-notes-generator': 10.0.3_semantic-release@19.0.5
   '@types/node': 18.11.9
-  '@types/prettier': 2.7.1
+  '@types/prettier': 2.7.3
   eslint: 8.29.0
   semantic-release: 19.0.5
   ts-node: 10.9.1_wup25etrarvlqkprac7h35hj7u
@@ -561,8 +561,8 @@ packages:
     resolution: {integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==}
     dev: true
 
-  /@types/prettier/2.7.1:
-    resolution: {integrity: sha512-ri0UmynRRvZiiUJdiz38MmIblKK+oH30MztdBVR95dv/Ubw6neWSb8u1XpRb72L4qsZOhz+L+z9JD40SJmfWow==}
+  /@types/prettier/2.7.3:
+    resolution: {integrity: sha512-+68kP9yzs4LMp7VNh8gdzMSPZFL44MLGqiHWvttYJe+6qnuVr4Ek9wSBQoveqY/r+LwjCcU29kNVkidwim+kYA==}
     dev: true
 
   /@types/retry/0.12.0:
@@ -2695,8 +2695,8 @@ packages:
     hasBin: true
     dev: false
 
-  /prettier/2.8.0:
-    resolution: {integrity: sha512-9Lmg8hTFZKG0Asr/kW9Bp8tJjRVluO8EJQVfY2T7FMw9T5jy4I/Uvx0Rca/XWf50QQ1/SS48+6IJWnrb+2yemA==}
+  /prettier/2.8.8:
+    resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: false
