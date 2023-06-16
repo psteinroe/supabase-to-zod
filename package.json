@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "case": "1.6.3",
-    "commander": "^9.4.1",
+    "commander": "^11.0.0",
     "prettier": "2.8.0",
     "slash": "^5.0.0",
     "ts-to-zod": "1.13.1",
