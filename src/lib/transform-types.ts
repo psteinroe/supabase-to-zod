@@ -45,7 +45,7 @@ export const transformTypes = z
     const enumNames: { name: string; formattedName: string }[] = [];
 
     sourceFile.forEachChild((n) => {
-      if (ts.isInterfaceDeclaration(n) && n.name.text === 'Database') {
+      if (ts.isTypeAliasDeclaration(n) && n.name.text === 'Database') {
         // Database
         n.forEachChild((n) => {
           if (ts.isPropertySignature(n)) {
