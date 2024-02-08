@@ -45,118 +45,122 @@ export const transformTypes = z
     const enumNames: { name: string; formattedName: string }[] = [];
 
     sourceFile.forEachChild((n) => {
+      const processDatabase = (n: ts.Node | ts.TypeNode) => {
+        if (ts.isPropertySignature(n)) {
+          // Schema
+          const schemaName = getNodeName(n);
+          if (schemaName === schema) {
+            n.forEachChild((n) => {
+              if (ts.isTypeLiteralNode(n)) {
+                n.forEachChild((n) => {
+                  if (ts.isPropertySignature(n) && ts.isIdentifier(n.name)) {
+                    if (['Tables', 'Views'].includes(n.name.text)) {
+                      n.forEachChild((n) => {
+                        if (ts.isTypeLiteralNode(n)) {
+                          n.forEachChild((n) => {
+                            if (ts.isPropertySignature(n)) {
+                              // Table or View
+                              const tableOrViewName = getNodeName(n);
+                              n.forEachChild((n) => {
+                                if (ts.isTypeLiteralNode(n)) {
+                                  n.forEachChild((n) => {
+                                    if (ts.isPropertySignature(n)) {
+                                      const operation = getNodeName(n);
+                                      if (operation) {
+                                        n.forEachChild((n) => {
+                                          if (ts.isTypeLiteralNode(n)) {
+                                            typeStrings.push(
+                                              `export type ${tableOrViewFormatter(
+                                                tableOrViewName,
+                                                operation,
+                                              )} = ${n.getText(sourceFile)}`,
+                                            );
+                                          }
+                                        });
+                                      }
+                                    }
+                                  });
+                                }
+                              });
+                            }
+                          });
+                        }
+                      });
+                    }
+                    if ('Enums' === n.name.text) {
+                      n.forEachChild((n) => {
+                        if (ts.isTypeLiteralNode(n)) {
+                          n.forEachChild((n) => {
+                            const enumName = getNodeName(n);
+                            if (ts.isPropertySignature(n)) {
+                              n.forEachChild((n) => {
+                                if (ts.isUnionTypeNode(n)) {
+                                  const formattedName = enumFormatter(enumName);
+                                  typeStrings.push(
+                                    `export type ${formattedName} = ${n.getText(
+                                      sourceFile,
+                                    )}`,
+                                  );
+                                  enumNames.push({
+                                    formattedName,
+                                    name: enumName,
+                                  });
+                                }
+                              });
+                            }
+                          });
+                        }
+                      });
+                    }
+                    if ('Functions' === n.name.text) {
+                      n.forEachChild((n) => {
+                        if (ts.isTypeLiteralNode(n)) {
+                          n.forEachChild((n) => {
+                            if (ts.isPropertySignature(n)) {
+                              const functionName = getNodeName(n);
+                              n.forEachChild((n) => {
+                                if (ts.isTypeLiteralNode(n)) {
+                                  n.forEachChild((n) => {
+                                    if (ts.isPropertySignature(n)) {
+                                      const argType = getNodeName(n);
+                                      n.forEachChild((n) => {
+                                        if (ts.isTypeReferenceNode(n)) {
+                                          typeStrings.push(
+                                            `export type ${functionFormatter(
+                                              functionName,
+                                              argType,
+                                            )} = ${n.getText(sourceFile)}`,
+                                          );
+                                        }
+                                      });
+                                    }
+                                  });
+                                }
+                              });
+                            }
+                          });
+                        }
+                      });
+                    }
+                  }
+                });
+              }
+            });
+          }
+        }
+      };
+
+      // Database
       if (
         ts.isTypeAliasDeclaration(n) &&
         ts.isTypeLiteralNode(n.type) &&
         n.name.text === 'Database'
       ) {
-        // Database
-        n.type.members.forEach((n) => {
-          if (ts.isPropertySignature(n)) {
-            // Schema
-            const schemaName = getNodeName(n);
-            if (schemaName === schema) {
-              n.forEachChild((n) => {
-                if (ts.isTypeLiteralNode(n)) {
-                  n.forEachChild((n) => {
-                    if (ts.isPropertySignature(n) && ts.isIdentifier(n.name)) {
-                      if (['Tables', 'Views'].includes(n.name.text)) {
-                        n.forEachChild((n) => {
-                          if (ts.isTypeLiteralNode(n)) {
-                            n.forEachChild((n) => {
-                              if (ts.isPropertySignature(n)) {
-                                // Table or View
-                                const tableOrViewName = getNodeName(n);
-                                n.forEachChild((n) => {
-                                  if (ts.isTypeLiteralNode(n)) {
-                                    n.forEachChild((n) => {
-                                      if (ts.isPropertySignature(n)) {
-                                        const operation = getNodeName(n);
-                                        if (operation) {
-                                          n.forEachChild((n) => {
-                                            if (ts.isTypeLiteralNode(n)) {
-                                              typeStrings.push(
-                                                `export type ${tableOrViewFormatter(
-                                                  tableOrViewName,
-                                                  operation
-                                                )} = ${n.getText(sourceFile)}`
-                                              );
-                                            }
-                                          });
-                                        }
-                                      }
-                                    });
-                                  }
-                                });
-                              }
-                            });
-                          }
-                        });
-                      }
-                      if ('Enums' === n.name.text) {
-                        n.forEachChild((n) => {
-                          if (ts.isTypeLiteralNode(n)) {
-                            n.forEachChild((n) => {
-                              const enumName = getNodeName(n);
-                              if (ts.isPropertySignature(n)) {
-                                n.forEachChild((n) => {
-                                  if (ts.isUnionTypeNode(n)) {
-                                    const formattedName =
-                                      enumFormatter(enumName);
-                                    typeStrings.push(
-                                      `export type ${formattedName} = ${n.getText(
-                                        sourceFile
-                                      )}`
-                                    );
-                                    enumNames.push({
-                                      formattedName,
-                                      name: enumName,
-                                    });
-                                  }
-                                });
-                              }
-                            });
-                          }
-                        });
-                      }
-                      if ('Functions' === n.name.text) {
-                        n.forEachChild((n) => {
-                          if (ts.isTypeLiteralNode(n)) {
-                            n.forEachChild((n) => {
-                              if (ts.isPropertySignature(n)) {
-                                const functionName = getNodeName(n);
-                                n.forEachChild((n) => {
-                                  if (ts.isTypeLiteralNode(n)) {
-                                    n.forEachChild((n) => {
-                                      if (ts.isPropertySignature(n)) {
-                                        const argType = getNodeName(n);
-                                        n.forEachChild((n) => {
-                                          if (ts.isTypeReferenceNode(n)) {
-                                            typeStrings.push(
-                                              `export type ${functionFormatter(
-                                                functionName,
-                                                argType
-                                              )} = ${n.getText(sourceFile)}`
-                                            );
-                                          }
-                                        });
-                                      }
-                                    });
-                                  }
-                                });
-                              }
-                            });
-                          }
-                        });
-                      }
-                    }
-                  });
-                }
-              });
-            }
-          }
-        });
+        n.type.members.forEach(processDatabase);
+      } else if (ts.isInterfaceDeclaration(n) && n.name.text === 'Database') {
+        n.forEachChild(processDatabase);
       }
+
       if (ts.isTypeAliasDeclaration(n) && n.name.text === 'Json') {
         typeStrings.push(n.getText(sourceFile));
       }
