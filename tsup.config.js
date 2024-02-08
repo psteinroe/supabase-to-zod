@@ -8,5 +8,6 @@ export default defineConfig({
   entry: ['src/index.ts', 'src/cli.ts'],
   format: ['cjs', 'esm'],
   minify: isProduction,
+  shims: true,
   sourcemap: true,
 });

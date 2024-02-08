@@ -62,7 +62,7 @@ export default async function supabaseToZod(opts: SupabaseToZodOptions) {
 
   await fs.writeFile(
     outputPath,
-    prettier.format(zodSchemasFile, {
+    await prettier.format(zodSchemasFile, {
       parser: 'babel-ts',
       ...prettierConfig,
     })
