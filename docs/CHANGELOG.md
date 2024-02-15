@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/psteinroe/supabase-to-zod/compare/v1.0.4...v1.0.5) (2024-02-15)
+
+
+### Bug Fixes
+
+* supa-db-type-declaration ([b5c627c](https://github.com/psteinroe/supabase-to-zod/commit/b5c627c507048255ae04a5b82d582103c7f17d26))
+
 ## [1.0.4](https://github.com/psteinroe/supabase-to-zod/compare/v1.0.3...v1.0.4) (2023-01-03)
 
 
