@@ -25,7 +25,7 @@ dependencies:
     version: 5.3.3
   zod:
     specifier: ^3.22.4
-    version: 3.22.4
+    version: 3.23.7
 
 devDependencies:
   '@semantic-release/changelog':
@@ -1144,7 +1144,7 @@ packages:
       normalize-path: 3.0.0
       readdirp: 3.6.0
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
 
   /clean-stack@2.2.0:
     resolution: {integrity: sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==}
@@ -1795,8 +1795,8 @@ packages:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
     dev: true
 
-  /fsevents@2.3.2:
-    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
+  /fsevents@2.3.3:
+    resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
     requiresBuild: true
@@ -3030,7 +3030,7 @@ packages:
       '@rollup/rollup-win32-arm64-msvc': 4.9.6
       '@rollup/rollup-win32-ia32-msvc': 4.9.6
       '@rollup/rollup-win32-x64-msvc': 4.9.6
-      fsevents: 2.3.2
+      fsevents: 2.3.3
     dev: true
 
   /run-async@2.4.1:
@@ -3494,7 +3494,7 @@ packages:
       tslib: 2.4.1
       tsutils: 3.21.0(typescript@5.3.3)
       typescript: 5.3.3
-      zod: 3.22.4
+      zod: 3.23.7
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -3771,6 +3771,6 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /zod@3.22.4:
-    resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
+  /zod@3.23.7:
+    resolution: {integrity: sha512-NBeIoqbtOiUMomACV/y+V3Qfs9+Okr18vR5c/5pHClPpufWOrsx8TENboDPe265lFdfewX2yBtNTLPvnmCxwog==}
     dev: false
