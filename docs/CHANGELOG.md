@@ -1,3 +1,10 @@
+## [1.0.7](https://github.com/psteinroe/supabase-to-zod/compare/v1.0.6...v1.0.7) (2024-06-26)
+
+
+### Bug Fixes
+
+* use correct child in single-member enum mode ([b5d4ca1](https://github.com/psteinroe/supabase-to-zod/commit/b5d4ca1e29b0c84137cdec7df3e152512f609915))
+
 ## [1.0.6](https://github.com/psteinroe/supabase-to-zod/compare/v1.0.5...v1.0.6) (2024-06-26)
 
 
