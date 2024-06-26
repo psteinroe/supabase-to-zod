@@ -125,12 +125,12 @@ export const transformTypes = z
                                 }
 
                                 // Handle single-member enums
-                                if (ts.isIdentifier(n)) {
+                                if (ts.isLiteralTypeNode(n)) {
                                   const formattedName = enumFormatter(enumName);
                                   typeStrings.push(
-                                    `export type ${formattedName} = '${n.getText(
+                                    `export type ${formattedName} = ${n.getText(
                                       sourceFile,
-                                    )}'`,
+                                    )}`,
                                   );
                                   enumNames.push({
                                     formattedName,
