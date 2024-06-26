@@ -1,3 +1,10 @@
+## [1.0.6](https://github.com/psteinroe/supabase-to-zod/compare/v1.0.5...v1.0.6) (2024-06-26)
+
+
+### Bug Fixes
+
+* trigger a release ([6fae2d5](https://github.com/psteinroe/supabase-to-zod/commit/6fae2d5b35d66589248993c73d89a0affc80310f))
+
 ## [1.0.5](https://github.com/psteinroe/supabase-to-zod/compare/v1.0.4...v1.0.5) (2024-02-15)
 
 
