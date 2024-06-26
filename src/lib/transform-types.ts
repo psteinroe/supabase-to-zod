@@ -3,6 +3,10 @@ import { z } from 'zod';
 import { getNodeName } from './get-node-name';
 
 const enumFormatterSchema = z.function().args(z.string()).returns(z.string());
+const compositeTypeFormatterSchema = z
+  .function()
+  .args(z.string())
+  .returns(z.string());
 
 const functionFormatterSchema = z
   .function()
@@ -18,6 +22,9 @@ export const transformTypesOptionsSchema = z.object({
   sourceText: z.string(),
   schema: z.string().default('public'),
   enumFormatter: enumFormatterSchema.default(() => (name: string) => name),
+  compositeTypeFormatter: compositeTypeFormatterSchema.default(
+    () => (name: string) => name
+  ),
   functionFormatter: functionFormatterSchema.default(
     () => (name: string, type: string) => `${name}${type}`
   ),
@@ -33,8 +40,13 @@ export const transformTypes = z
   .args(transformTypesOptionsSchema)
   .returns(z.string())
   .implement((opts) => {
-    const { schema, tableOrViewFormatter, enumFormatter, functionFormatter } =
-      opts;
+    const {
+      schema,
+      tableOrViewFormatter,
+      enumFormatter,
+      compositeTypeFormatter,
+      functionFormatter,
+    } = opts;
     const sourceFile = ts.createSourceFile(
       'index.ts',
       opts.sourceText,
@@ -43,6 +55,7 @@ export const transformTypes = z
 
     const typeStrings: string[] = [];
     const enumNames: { name: string; formattedName: string }[] = [];
+    const compositeTypeNames: { name: string; formattedName: string }[] = [];
 
     sourceFile.forEachChild((n) => {
       const processDatabase = (n: ts.Node | ts.TypeNode) => {
@@ -68,7 +81,11 @@ export const transformTypes = z
                                       const operation = getNodeName(n);
                                       if (operation) {
                                         n.forEachChild((n) => {
-                                          if (ts.isTypeLiteralNode(n)) {
+                                          if (
+                                            ts.isTypeLiteralNode(n) ||
+                                            // Handle `Relationships` operation which is an array
+                                            ts.isTupleTypeNode(n)
+                                          ) {
                                             typeStrings.push(
                                               `export type ${tableOrViewFormatter(
                                                 tableOrViewName,
@@ -102,6 +119,46 @@ export const transformTypes = z
                                     )}`,
                                   );
                                   enumNames.push({
+                                    formattedName,
+                                    name: enumName,
+                                  });
+                                }
+
+                                // Handle single-member enums
+                                if (ts.isIdentifier(n)) {
+                                  const formattedName = enumFormatter(enumName);
+                                  typeStrings.push(
+                                    `export type ${formattedName} = '${n.getText(
+                                      sourceFile,
+                                    )}'`,
+                                  );
+                                  enumNames.push({
+                                    formattedName,
+                                    name: enumName,
+                                  });
+                                }
+                              });
+                            }
+                          });
+                        }
+                      });
+                    }
+                    if ('CompositeTypes' === n.name.text) {
+                      n.forEachChild((n) => {
+                        if (ts.isTypeLiteralNode(n)) {
+                          n.forEachChild((n) => {
+                            const enumName = getNodeName(n);
+                            if (ts.isPropertySignature(n)) {
+                              n.forEachChild((n) => {
+                                if (ts.isTypeLiteralNode(n)) {
+                                  const formattedName =
+                                    compositeTypeFormatter(enumName);
+                                  typeStrings.push(
+                                    `export type ${formattedName} = ${n.getText(
+                                      sourceFile,
+                                    )}`,
+                                  );
+                                  compositeTypeNames.push({
                                     formattedName,
                                     name: enumName,
                                   });
@@ -178,6 +235,17 @@ export const transformTypes = z
       parsedTypes = parsedTypes.replaceAll(
         `Database['${schema}']['Enums']['${name}']`,
         formattedName
+      );
+    }
+
+    for (const { name, formattedName } of compositeTypeNames) {
+      parsedTypes = parsedTypes.replaceAll(
+        `Database["${schema}"]["CompositeTypes"]["${name}"]`,
+        formattedName,
+      );
+      parsedTypes = parsedTypes.replaceAll(
+        `Database['${schema}']['CompositeTypes']['${name}']`,
+        formattedName,
       );
     }
 

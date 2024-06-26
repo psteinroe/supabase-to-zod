@@ -49,10 +49,14 @@ export default async function supabaseToZod(opts: SupabaseToZodOptions) {
 
   const parsedTypes = transformTypes({ sourceText, ...opts });
 
-  const { getZodSchemasFile } = generate({
+  const { getZodSchemasFile, errors } = generate({
     sourceText: parsedTypes,
     ...opts,
   });
+
+  if (errors.length > 0) {
+    throw new Error(errors.join('\n'));
+  }
 
   const zodSchemasFile = getZodSchemasFile(
     getImportPath(outputPath, inputPath)
