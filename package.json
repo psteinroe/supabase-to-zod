@@ -45,7 +45,7 @@
     "eslint": "^8.56.0",
     "semantic-release": "^23.0.2",
     "ts-node": "^10.9.2",
-    "tsup": "8.0.1"
+    "tsup": "8.3.0"
   },
   "repository": {
     "type": "git",
