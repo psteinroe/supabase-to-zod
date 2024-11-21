@@ -55,11 +55,11 @@ export default async function supabaseToZod(opts: SupabaseToZodOptions) {
   });
 
   if (errors.length > 0) {
-    throw new Error(errors.join('\n'));
+    console.error(errors.join('\n'));
   }
 
   const zodSchemasFile = getZodSchemasFile(
-    getImportPath(outputPath, inputPath)
+    getImportPath(outputPath, inputPath),
   );
 
   const prettierConfig = await prettier.resolveConfig(process.cwd());
@@ -69,6 +69,6 @@ export default async function supabaseToZod(opts: SupabaseToZodOptions) {
     await prettier.format(zodSchemasFile, {
       parser: 'babel-ts',
       ...prettierConfig,
-    })
+    }),
   );
 }
