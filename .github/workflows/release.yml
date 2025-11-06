@@ -12,12 +12,12 @@ jobs:
 
       - uses: pnpm/action-setup@v2.2.2
         with:
-          version: 8.x.x
+          version: 10.x.x
 
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 24
           cache: pnpm
 
       - name: Install Dependencies

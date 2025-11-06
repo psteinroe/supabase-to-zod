@@ -16,14 +16,20 @@ const simplifiedJSDocTagSchema = z.object({
   value: z.string().optional(),
 });
 
-const getSchemaNameSchema = z.function().args(z.string()).returns(z.string());
+const getSchemaNameSchema = z.function({
+  input: [z.string()],
+  output: z.string(),
+});
 
-const nameFilterSchema = z.function().args(z.string()).returns(z.boolean());
+const nameFilterSchema = z.function({
+  input: [z.string()],
+  output: z.boolean(),
+});
 
-const jSDocTagFilterSchema = z
-  .function()
-  .args(z.array(simplifiedJSDocTagSchema))
-  .returns(z.boolean());
+const jSDocTagFilterSchema = z.function({
+  input: [z.array(simplifiedJSDocTagSchema)],
+  output: z.boolean(),
+});
 
 export const supabaseToZodOptionsSchema = transformTypesOptionsSchema
   .omit({ sourceText: true })
@@ -59,7 +65,7 @@ export default async function supabaseToZod(opts: SupabaseToZodOptions) {
   }
 
   const zodSchemasFile = getZodSchemasFile(
-    getImportPath(outputPath, inputPath)
+    getImportPath(outputPath, inputPath),
   );
 
   const prettierConfig = await prettier.resolveConfig(process.cwd());
@@ -69,6 +75,6 @@ export default async function supabaseToZod(opts: SupabaseToZodOptions) {
     await prettier.format(zodSchemasFile, {
       parser: 'babel-ts',
       ...prettierConfig,
-    })
+    }),
   );
 }

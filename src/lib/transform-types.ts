@@ -2,43 +2,48 @@ import ts from 'typescript';
 import { z } from 'zod';
 import { getNodeName } from './get-node-name';
 
-const enumFormatterSchema = z.function().args(z.string()).returns(z.string());
-const compositeTypeFormatterSchema = z
-  .function()
-  .args(z.string())
-  .returns(z.string());
+const enumFormatterSchema = z.function({
+  input: [z.string()],
+  output: z.string(),
+});
 
-const functionFormatterSchema = z
-  .function()
-  .args(z.string(), z.string())
-  .returns(z.string());
+const compositeTypeFormatterSchema = z.function({
+  input: [z.string()],
+  output: z.string(),
+});
 
-const tableOrViewFormatterSchema = z
-  .function()
-  .args(z.string(), z.string())
-  .returns(z.string());
+const functionFormatterSchema = z.function({
+  input: [z.string(), z.string()],
+  output: z.string(),
+});
+
+const tableOrViewFormatterSchema = z.function({
+  input: [z.string(), z.string()],
+  output: z.string(),
+});
 
 export const transformTypesOptionsSchema = z.object({
   sourceText: z.string(),
   schema: z.string().default('public'),
   enumFormatter: enumFormatterSchema.default(() => (name: string) => name),
   compositeTypeFormatter: compositeTypeFormatterSchema.default(
-    () => (name: string) => name
+    () => (name: string) => name,
   ),
   functionFormatter: functionFormatterSchema.default(
-    () => (name: string, type: string) => `${name}${type}`
+    () => (name: string, type: string) => `${name}${type}`,
   ),
   tableOrViewFormatter: tableOrViewFormatterSchema.default(
-    () => (name: string, operation: string) => `${name}${operation}`
+    () => (name: string, operation: string) => `${name}${operation}`,
   ),
 });
 
 export type TransformTypesOptions = z.infer<typeof transformTypesOptionsSchema>;
 
 export const transformTypes = z
-  .function()
-  .args(transformTypesOptionsSchema)
-  .returns(z.string())
+  .function({
+    input: [transformTypesOptionsSchema],
+    output: z.string(),
+  })
   .implement((opts) => {
     const {
       schema,
@@ -50,7 +55,7 @@ export const transformTypes = z
     const sourceFile = ts.createSourceFile(
       'index.ts',
       opts.sourceText,
-      ts.ScriptTarget.Latest
+      ts.ScriptTarget.Latest,
     );
 
     const typeStrings: string[] = [];
@@ -230,11 +235,11 @@ export const transformTypes = z
     for (const { name, formattedName } of enumNames) {
       parsedTypes = parsedTypes.replaceAll(
         `Database["${schema}"]["Enums"]["${name}"]`,
-        formattedName
+        formattedName,
       );
       parsedTypes = parsedTypes.replaceAll(
         `Database['${schema}']['Enums']['${name}']`,
-        formattedName
+        formattedName,
       );
     }
 
