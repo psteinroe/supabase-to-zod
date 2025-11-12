@@ -2,21 +2,24 @@ import ts from 'typescript';
 import { z } from 'zod';
 import { getNodeName } from './get-node-name';
 
-const enumFormatterSchema = z.function().args(z.string()).returns(z.string());
-const compositeTypeFormatterSchema = z
-  .function()
-  .args(z.string())
-  .returns(z.string());
+const enumFormatterSchema = z.function({
+  input: [z.string()],
+  output: z.string(),
+});
+const compositeTypeFormatterSchema = z.function({
+  input: [z.string()],
+  output: z.string(),
+});
 
-const functionFormatterSchema = z
-  .function()
-  .args(z.string(), z.string())
-  .returns(z.string());
+const functionFormatterSchema = z.function({
+  input: [z.string(), z.string()],
+  output: z.string(),
+});
 
-const tableOrViewFormatterSchema = z
-  .function()
-  .args(z.string(), z.string())
-  .returns(z.string());
+const tableOrViewFormatterSchema = z.function({
+  input: [z.string(), z.string()],
+  output: z.string(),
+});
 
 export const transformTypesOptionsSchema = z.object({
   sourceText: z.string(),
@@ -36,9 +39,10 @@ export const transformTypesOptionsSchema = z.object({
 export type TransformTypesOptions = z.infer<typeof transformTypesOptionsSchema>;
 
 export const transformTypes = z
-  .function()
-  .args(transformTypesOptionsSchema)
-  .returns(z.string())
+  .function({
+    input: [transformTypesOptionsSchema],
+    output: z.string(),
+  })
   .implement((opts) => {
     const {
       schema,

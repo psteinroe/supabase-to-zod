@@ -16,14 +16,20 @@ const simplifiedJSDocTagSchema = z.object({
   value: z.string().optional(),
 });
 
-const getSchemaNameSchema = z.function().args(z.string()).returns(z.string());
+const getSchemaNameSchema = z.function({
+  input: [z.string()],
+  output: z.string(),
+});
 
-const nameFilterSchema = z.function().args(z.string()).returns(z.boolean());
+const nameFilterSchema = z.function({
+  input: [z.string()],
+  output: z.boolean(),
+});
 
-const jSDocTagFilterSchema = z
-  .function()
-  .args(z.array(simplifiedJSDocTagSchema))
-  .returns(z.boolean());
+const jSDocTagFilterSchema = z.function({
+  input: [z.array(simplifiedJSDocTagSchema)],
+  output: z.boolean(),
+});
 
 export const supabaseToZodOptionsSchema = transformTypesOptionsSchema
   .omit({ sourceText: true })
@@ -59,16 +65,26 @@ export default async function supabaseToZod(opts: SupabaseToZodOptions) {
   }
 
   const zodSchemasFile = getZodSchemasFile(
-    getImportPath(outputPath, inputPath)
+    getImportPath(outputPath, inputPath),
   );
 
   const prettierConfig = await prettier.resolveConfig(process.cwd());
 
-  await fs.writeFile(
-    outputPath,
-    await prettier.format(zodSchemasFile, {
-      parser: 'babel-ts',
-      ...prettierConfig,
-    })
-  );
+  let data = await prettier.format(zodSchemasFile, {
+    parser: 'babel-ts',
+    ...prettierConfig,
+  });
+
+  /**
+   * In Zod v4, ZodSchema has been deprecated and aliased to ZodType.
+   * However, "generate" function currently still outputs ZodSchema.
+   * While ZodSchema is still technically available,
+   * using ZodType is the recommended approach for generic constraints and type inference in Zod v4 and beyond.
+   *
+   * Until the "ts-to-zod" package updates to reflect this change,
+   * we will manually replace ZodSchema with ZodType here.
+   */
+  data = data.replace('ZodSchema', 'ZodType');
+
+  await fs.writeFile(outputPath, data);
 }
