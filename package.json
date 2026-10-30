@@ -32,7 +32,7 @@
     "slash": "^5.1.0",
     "ts-to-zod": "3.7.0",
     "typescript": "5.3.3",
-    "zod": "^3.22.4"
+    "zod": "^4.0.0"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
